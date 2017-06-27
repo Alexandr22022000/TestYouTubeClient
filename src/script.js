@@ -7,13 +7,14 @@ $(document).ready(() => {
  */
 
 let channelDate = {
-    update(date)  {
+    update(date, listsCount)  {
         $('#channelData__logo').show();
         $('#channelData__logo').attr('src', date.snippet.thumbnails.high.url);
         $('#channelData__title').html(date.snippet.title);
         $('#channelData__description').html(date.snippet.description);
 
         $('#channelData__videos').html(`Видео: ${date.statistics.videoCount}`);
+        $('#channelData__lists').html(`Плейлисты: ${listsCount}`);
         $('#channelData__subscribers').html(`Подпищики: ${date.statistics.subscriberCount}`);
         $('#channelData__views').html(`Просмотры: ${date.statistics.viewCount}`);
         $('#channelData__comments').html(`Коментарии: ${date.statistics.commentCount}`);
@@ -30,9 +31,9 @@ let channelDate = {
         $('#channelData__comments').html('');
     },
 
-    waiting() {
+    hidden() {
         $('#channelData__logo').hide();
-        $('#channelData__title').html('Ожидание ответа от сервера...');
+        $('#channelData__title').html('');
         $('#channelData__description').html('');
         $('#channelData__videos').html('');
         $('#channelData__lists').html('');
@@ -56,7 +57,7 @@ let listsList = {
     },
 
     createItem (item) {
-        return `<div class="listItem" id="${item.id}" onClick="onSelectList(this)">${this.createLogo(item.snippet.thumbnails.medium.url)}<div class="listItem__text">${this.createTitle(item.snippet.title)}</div></div>`;
+        return `<div class="listItem" id="${item.id}" onClick="onSelectList(this)">${this.createLogo(item.snippet.thumbnails.medium.url)}<div class="listItem__text">${this.createTitle(item.snippet.title)}${this.createDescription(item.contentDetails.itemCount)}</div></div>`;
     },
 
     createLogo (src) {
@@ -65,6 +66,10 @@ let listsList = {
 
     createTitle (title) {
         return `<h2 class="listItem__title">${title}</h2>`;
+    },
+
+    createDescription (videosCount) {
+        return `<p class="listItem__description">${videosCount} видео</p>`;
     },
 
     hidden() {
@@ -131,6 +136,10 @@ let stateIcon = {
 
     waiting() {
         $('#toolbar__statusIcon').html('Ожидание...');
+    },
+
+    error (code) {
+        $('#toolbar__statusIcon').html(`Ошибка ${code}`);
     }
 };
 
@@ -140,7 +149,6 @@ let stateIcon = {
  */
 
 function onSelectChannel () {
-    console.log('qwe');
     selectChannel($('#toolbar__changeChannelInput').val());
 }
 
@@ -159,14 +167,14 @@ function onSelectVideo(e) {
  */
 
 function selectChannel (id) {
-    channelDate.waiting();
+    channelDate.hidden();
     listsList.hidden();
     videosList.hidden();
     video.hidden();
     stateIcon.waiting();
 
     request(getChannelDate, 'channels', {part: 'snippet,statistics', id});
-    request(getLists, 'playlists', {part: 'snippet', channelId: id, maxResults: '25'});
+    request(getLists, 'playlists', {part: 'snippet,contentDetails', channelId: id, maxResults: '25'});
 }
 
 function selectList (id) {
@@ -188,34 +196,80 @@ function selectVideo (id) {
 ---callbacks---
  */
 
-function getChannelDate (date) {
-    if (date.items.length === 0) {
-        channelDate.notFound();
-        stateIcon.ready();
-        return;
-    }
+let firstDateChannel = null;
 
-    channelDate.update(date.items[0]);
-    stateIcon.ready();
+function getChannelDate (date) {
+    if (firstDateChannel === null) {
+        firstDateChannel = date;
+    }
+    else {
+        channelRequestSuccess(date, firstDateChannel);
+        firstDateChannel = null;
+    }
 }
 
 function getLists (date) {
-    if (date.items.length === 0) {
+    if (firstDateChannel === null) {
+        firstDateChannel = date;
+    }
+    else {
+        channelRequestSuccess(firstDateChannel, date);
+        firstDateChannel = null;
+    }
+}
+
+function channelRequestSuccess (dateChannel, dateLists) {
+    if ('error' in dateChannel) {
+        channelDate.hidden();
+        listsList.hidden();
+        stateIcon.error(dateChannel.error.code);
+        return;
+    }
+
+    if (dateChannel.items.length === 0) {
+        channelDate.notFound();
         listsList.hidden();
         stateIcon.ready();
         return;
     }
 
-    listsList.update(date.items);
+    if ('error' in dateLists) {
+        channelDate.hidden();
+        listsList.hidden();
+        stateIcon.error(dateLists.error.code);
+        return;
+    }
+
+    channelDate.update(dateChannel.items[0], dateLists.items.length);
+
+    if (dateLists.items.length === 0) {
+        listsList.hidden();
+    }
+    else {
+        listsList.update(dateLists.items);
+    }
+
     stateIcon.ready();
 }
 
 function getVideos (date) {
+    if ('error' in date) {
+        videosList.hidden();
+        stateIcon.error(date.error.code);
+        return;
+    }
+
     videosList.update(date.items);
     stateIcon.ready();
 }
 
 function getVideoDate (date) {
+    if ('error' in date) {
+        video.hidden();
+        stateIcon.error(date.error.code);
+        return;
+    }
+
     video.update(date.items[0]);
     stateIcon.ready();
 }
@@ -230,7 +284,10 @@ function request(callback, method, params) {
         url: createUrl(method, params),
         method: 'GET',
         dataType: 'JSONP',
-        success: callback
+        success: callback,
+        error: (jqXHR) => {
+            stateIcon.error(`соединения ${jqXHR.status}`);
+        }
     });
 }
 

@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="toolbar">
-    <p class="toolbar__statusIcon" id="toolbar__statusIcon">Загрузка данных с сервера</p>
+    <p class="toolbar__statusIcon" id="toolbar__statusIcon"></p>
     <div class="toolbar__changeChannel">
         <p class="toolbar__changeChannelButton" onClick="onSelectChannel()">Сменить канал</p>
         <input class="toolbar__changeChannelInput" id="toolbar__changeChannelInput" title=""/>
@@ -27,6 +27,7 @@
             </td>
             <td>
                 <p class="channelData__statistics" id="channelData__videos"></p>
+                <p class="channelData__statistics" id="channelData__lists"></p>
                 <p class="channelData__statistics" id="channelData__subscribers"></p>
                 <p class="channelData__statistics" id="channelData__views"></p>
                 <p class="channelData__statistics" id="channelData__comments"></p>
@@ -45,23 +46,23 @@
             </td>
             <td class="video" id="video">
                 <iframe id="video__view" width="800" height="450" src="" frameborder="0" allowfullscreen></iframe>
-                <h1 id="video__title" class="video__title">LanguageRS_v0.5</h1>
-                <p id="video__description" class="video__description">бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла</p>
+                <h1 id="video__title" class="video__title"></h1>
+                <p id="video__description" class="video__description"></p>
                 <table>
                     <tr>
                         <td>
-                            <p class="video_statistics" id="video__likes">Нравится: 2</p>
+                            <p class="video_statistics" id="video__likes"></p>
                         </td>
                         <td>
-                            <p class="video_statistics" id="video__dislikes">Не нравится: 0</p>
+                            <p class="video_statistics" id="video__dislikes"></p>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <p class="video_statistics" id="video__views">Просмотры: 67</p>
+                            <p class="video_statistics" id="video__views"></p>
                         </td>
                         <td>
-                            <p class="video_statistics" id="video__comments">Коментарии: 0</p>
+                            <p class="video_statistics" id="video__comments"></p>
                         </td>
                     </tr>
                 </table>
