@@ -1,0 +1,17 @@
+.toolbar {
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    background-color: #222;
+    border-bottom: solid 2px #000;
+    top: -1px;
+}
+
+.toolbar__change-chanel, .toolbar__status-icon {
+    display: inline-block;
+}
+
+.toolbar__change-chanel {
+    float: right;
+    margin: 15px 0;
+}

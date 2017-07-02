@@ -1,0 +1,10 @@
+.videos-list {
+    vertical-align: top;
+    border: solid 2px #000;
+    background-color: #222;
+    height: 750px;
+    width: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0 10px;
+}

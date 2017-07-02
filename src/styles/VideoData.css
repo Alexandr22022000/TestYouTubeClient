@@ -1,0 +1,20 @@
+.video {
+    vertical-align: top;
+    padding: 0 20px;
+}
+
+.video__title {
+    font-size: 40px;
+    color: #CCC;
+}
+
+.video__description {
+    font-size: 25px;
+    color: #999;
+}
+
+.video__statistics {
+    font-size: 30px;
+    margin: 0 30px 0 0;
+    color: #CCC;
+}
