@@ -1,51 +1,53 @@
 $(document).ready(() => {
     selectChannel('UCFjOsuEC53SL4GWpeO7b7Ww');
+
+    console.log('start')
 });
 
 /*
 ---Обновление интерфейса---
  */
 
-let channelDate = {
-    update(date, listsCount)  {
-        $('#channelData__logo').show();
-        $('#channelData__logo').attr('src', date.snippet.thumbnails.high.url);
-        $('#channelData__title').html(date.snippet.title);
-        $('#channelData__description').html(date.snippet.description);
+let channelData = {
+    update(data, listsCount)  {
+        $('#channel-data__logo').show();
+        $('#channel-data__logo').attr('src', data.snippet.thumbnails.high.url);
+        $('#channel-data__title').html(data.snippet.title);
+        $('#channel-data__description').html(data.snippet.description);
 
-        $('#channelData__videos').html(`Видео: ${date.statistics.videoCount}`);
-        $('#channelData__lists').html(`Плейлисты: ${listsCount}`);
-        $('#channelData__subscribers').html(`Подпищики: ${date.statistics.subscriberCount}`);
-        $('#channelData__views').html(`Просмотры: ${date.statistics.viewCount}`);
-        $('#channelData__comments').html(`Коментарии: ${date.statistics.commentCount}`);
+        $('#channel-data__videos').html(`Видео: ${data.statistics.videoCount}`);
+        $('#channel-data__lists').html(`Плейлисты: ${listsCount}`);
+        $('#channel-data__subscribers').html(`Подпищики: ${data.statistics.subscriberCount}`);
+        $('#channel-data__views').html(`Просмотры: ${data.statistics.viewCount}`);
+        $('#channel-data__comments').html(`Коментарии: ${data.statistics.commentCount}`);
     },
 
     notFound() {
-        $('#channelData__logo').hide();
-        $('#channelData__title').html('Канал не найден!');
-        $('#channelData__description').html('');
-        $('#channelData__videos').html('');
-        $('#channelData__lists').html('');
-        $('#channelData__subscribers').html('');
-        $('#channelData__views').html('');
-        $('#channelData__comments').html('');
+        $('#channel-data__logo').hide();
+        $('#channel-data__title').html('Канал не найден!');
+        $('#channel-data__description').html('');
+        $('#channel-data__videos').html('');
+        $('#channel-data__lists').html('');
+        $('#channel-data__subscribers').html('');
+        $('#channel-data__views').html('');
+        $('#channel-data__comments').html('');
     },
 
     hidden() {
-        $('#channelData__logo').hide();
-        $('#channelData__title').html('');
-        $('#channelData__description').html('');
-        $('#channelData__videos').html('');
-        $('#channelData__lists').html('');
-        $('#channelData__subscribers').html('');
-        $('#channelData__views').html('');
-        $('#channelData__comments').html('');
+        $('#channel-data__logo').hide();
+        $('#channel-data__title').html('');
+        $('#channel-data__description').html('');
+        $('#channel-data__videos').html('');
+        $('#channel-data__lists').html('');
+        $('#channel-data__subscribers').html('');
+        $('#channel-data__views').html('');
+        $('#channel-data__comments').html('');
     }
 };
 
 let listsList = {
     update(items) {
-        $('#listsList').show();
+        $('#lists-list').show();
 
         let list = '';
 
@@ -53,33 +55,33 @@ let listsList = {
             list = list + this.createItem(items[key]);
         }
 
-        $('#listsList').html(list);
+        $('#lists-list').html(list);
     },
 
     createItem (item) {
-        return `<div class="listItem" id="${item.id}" onClick="onSelectList(this)">${this.createLogo(item.snippet.thumbnails.medium.url)}<div class="listItem__text">${this.createTitle(item.snippet.title)}${this.createDescription(item.contentDetails.itemCount)}</div></div>`;
+        return `<div class="list-item" id="${item.id}" onClick="onSelectList(this)">${this.createLogo(item.snippet.thumbnails.medium.url)}<div class="list-item__text">${this.createTitle(item.snippet.title)}${this.createDescription(item.contentDetails.itemCount)}</div></div>`;
     },
 
     createLogo (src) {
-        return `<img class="listItem__logo" src="${src}"/>`;
+        return `<img class="list-item__logo" src="${src}"/>`;
     },
 
     createTitle (title) {
-        return `<h2 class="listItem__title">${title}</h2>`;
+        return `<h2 class="list-item__title">${title}</h2>`;
     },
 
     createDescription (videosCount) {
-        return `<p class="listItem__description">${videosCount} видео</p>`;
+        return `<p class="list-item__description">${videosCount} видео</p>`;
     },
 
     hidden() {
-        $('#listsList').hide();
+        $('#lists-list').hide();
     }
 };
 
 let videosList = {
     update(items) {
-        $('#videosList').show();
+        $('#videos-list').show();
 
         let list = '';
 
@@ -87,11 +89,11 @@ let videosList = {
             list = list + this.createItem(items[key]);
         }
 
-        $('#videosList').html(list);
+        $('#videos-list').html(list);
     },
 
     createItem (item) {
-        return `<div class="listItem" id="${item.snippet.resourceId.videoId}" onClick="onSelectVideo(this)">${this.createPreview(item.snippet.resourceId.videoId)}<div class="listItem__text">${this.createTitle(item.snippet.title)}${this.createDescription(item.snippet.description)}</div></div>`;
+        return `<div class="list-item" id="${item.snippet.resourceId.videoId}" onClick="onSelectVideo(this)">${this.createPreview(item.snippet.resourceId.videoId)}<div class="list-item__text">${this.createTitle(item.snippet.title)}${this.createDescription(item.snippet.description)}</div></div>`;
     },
 
     createPreview (id) {
@@ -99,15 +101,15 @@ let videosList = {
     },
 
     createTitle (title) {
-        return `<h2 class="listItem__title">${title}</h2>`;
+        return `<h2 class="list-item__title">${title}</h2>`;
     },
 
     createDescription (description) {
-        return `<p class="listItem__description">${description}</p>`;
+        return `<p class="list-item__description">${description}</p>`;
     },
 
     hidden() {
-        $('#videosList').hide();
+        $('#videos-list').hide();
     }
 };
 
@@ -131,15 +133,15 @@ let video = {
 
 let stateIcon = {
     ready() {
-        $('#toolbar__statusIcon').html('Готово');
+        $('#toolbar__status-icon').html('Готово');
     },
 
     waiting() {
-        $('#toolbar__statusIcon').html('Ожидание...');
+        $('#toolbar__status-icon').html('Ожидание...');
     },
 
     error (code) {
-        $('#toolbar__statusIcon').html(`Ошибка ${code}`);
+        $('#toolbar__status-icon').html(`Ошибка ${code}`);
     }
 };
 
@@ -149,7 +151,7 @@ let stateIcon = {
  */
 
 function onSelectChannel () {
-    selectChannel($('#toolbar__changeChannelInput').val());
+    selectChannel($('#toolbar__change-channel-input').val());
 }
 
 function onSelectList(e) {
@@ -167,13 +169,13 @@ function onSelectVideo(e) {
  */
 
 function selectChannel (id) {
-    channelDate.hidden();
+    channelData.hidden();
     listsList.hidden();
     videosList.hidden();
     video.hidden();
     stateIcon.waiting();
 
-    request(getChannelDate, 'channels', {part: 'snippet,statistics', id});
+    request(getChanneldata, 'channels', {part: 'snippet,statistics', id});
     request(getLists, 'playlists', {part: 'snippet,contentDetails', channelId: id, maxResults: '25'});
 }
 
@@ -189,88 +191,88 @@ function selectVideo (id) {
     video.hidden();
     stateIcon.waiting();
 
-    request(getVideoDate, 'videos', {id, part: 'snippet,statistics'});
+    request(getVideoData, 'videos', {id, part: 'snippet,statistics'});
 }
 
 /*
 ---callbacks---
  */
 
-let firstDateChannel = null;
+let firstDataChannel = null;
 
-function getChannelDate (date) {
-    if (firstDateChannel === null) {
-        firstDateChannel = date;
+function getChanneldata (data) {
+    if (firstDataChannel === null) {
+        firstDataChannel = data;
     }
     else {
-        channelRequestSuccess(date, firstDateChannel);
-        firstDateChannel = null;
+        channelRequestSuccess(data, firstDataChannel);
+        firstDataChannel = null;
     }
 }
 
-function getLists (date) {
-    if (firstDateChannel === null) {
-        firstDateChannel = date;
+function getLists (data) {
+    if (firstDataChannel === null) {
+        firstDataChannel = data;
     }
     else {
-        channelRequestSuccess(firstDateChannel, date);
-        firstDateChannel = null;
+        channelRequestSuccess(firstDataChannel, data);
+        firstDataChannel = null;
     }
 }
 
-function channelRequestSuccess (dateChannel, dateLists) {
-    if ('error' in dateChannel) {
-        channelDate.hidden();
+function channelRequestSuccess (dataChannel, dataLists) {
+    if ('error' in dataChannel) {
+        channelData.hidden();
         listsList.hidden();
-        stateIcon.error(dateChannel.error.code);
+        stateIcon.error(dataChannel.error.code);
         return;
     }
 
-    if (dateChannel.items.length === 0) {
-        channelDate.notFound();
+    if (dataChannel.items.length === 0) {
+        channelData.notFound();
         listsList.hidden();
         stateIcon.ready();
         return;
     }
 
-    if ('error' in dateLists) {
-        channelDate.hidden();
+    if ('error' in dataLists) {
+        channelData.hidden();
         listsList.hidden();
-        stateIcon.error(dateLists.error.code);
+        stateIcon.error(dataLists.error.code);
         return;
     }
 
-    channelDate.update(dateChannel.items[0], dateLists.items.length);
+    channelData.update(dataChannel.items[0], dataLists.items.length);
 
-    if (dateLists.items.length === 0) {
+    if (dataLists.items.length === 0) {
         listsList.hidden();
     }
     else {
-        listsList.update(dateLists.items);
+        listsList.update(dataLists.items);
     }
 
     stateIcon.ready();
 }
 
-function getVideos (date) {
-    if ('error' in date) {
+function getVideos (data) {
+    if ('error' in data) {
         videosList.hidden();
-        stateIcon.error(date.error.code);
+        stateIcon.error(data.error.code);
         return;
     }
 
-    videosList.update(date.items);
+    videosList.update(data.items);
     stateIcon.ready();
 }
 
-function getVideoDate (date) {
-    if ('error' in date) {
+function getVideoData (data) {
+    if ('error' in data) {
         video.hidden();
-        stateIcon.error(date.error.code);
+        stateIcon.error(data.error.code);
         return;
     }
 
-    video.update(date.items[0]);
+    video.update(data.items[0]);
     stateIcon.ready();
 }
 
