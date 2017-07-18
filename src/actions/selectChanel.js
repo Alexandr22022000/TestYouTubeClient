@@ -56,7 +56,7 @@ const selectChanel = (id) => (dispatch) => {
             dispatch(getLists(response.data));
         })
         .catch(function (error) {
-            console.log(error);
+            dispatch(requestError(error));
         });
 };
 

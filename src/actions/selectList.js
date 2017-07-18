@@ -16,7 +16,9 @@ const requestError = (error) => ({
     error
 });
 
-const selectList = (id) => (dispatch) => {
+const selectList = (id) => (dispatch, store) => {
+    console.log(store());
+
     dispatch(requestVideos());
 
     axios.get(`${URL}playlistItems`, {
@@ -28,11 +30,9 @@ const selectList = (id) => (dispatch) => {
         }
     })
         .then(function (response) {
-            console.log(response);
             dispatch(getVideos(response.data));
         })
         .catch(function (error) {
-            console.log(error);
             dispatch(requestError(error));
         });
 };

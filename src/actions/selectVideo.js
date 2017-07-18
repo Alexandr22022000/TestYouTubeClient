@@ -27,11 +27,9 @@ const selectVideo = (id) => (dispatch) => {
         }
     })
         .then(function (response) {
-            console.log(response);
             dispatch(getVideoData(response.data));
         })
         .catch(function (error) {
-            console.log(error);
             dispatch(requestError(error));
         });
 };

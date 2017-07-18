@@ -16,7 +16,6 @@ const defaultState = {
 };
 
 const chanelData = (state = defaultState, action) => {
-    console.log(action);
     switch (action.type) {
         case REQUEST_CHANEL_DATA:
         case REQUEST_LISTS:

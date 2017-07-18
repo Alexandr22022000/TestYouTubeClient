@@ -9,14 +9,9 @@ const mapStateToProps = (state) => ({
     videoData: state.videoData
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    onClickList (id) {
-        dispatch(selectList(id));
-    },
-
-    onClickVideo (id) {
-        dispatch(selectVideo(id))
-    }
-});
+const mapDispatchToProps = {
+    onClickList: selectList,
+    onClickVideo: selectVideo
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);
